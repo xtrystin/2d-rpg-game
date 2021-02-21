@@ -17,9 +17,11 @@ private:
 
 	std::stack<State*> states;	//state is a abstract class
 
+	std::map<const char*, sf::Keyboard::Key> supportedKeys;	//std::string - const char* ; sf::Keyboard::Key is int 
 
 	// initialization
 	void initWindow();
+	void initKeys();
 	void initStates();
 
 public:
