@@ -33,17 +33,43 @@ void Game::initWindow()
 
 void Game::initKeys()
 {
-    this->supportedKeys.emplace("Escape", sf::Keyboard::Key::Escape);
-    this->supportedKeys.emplace("A", sf::Keyboard::Key::A);
-    this->supportedKeys.emplace("D", sf::Keyboard::Key::D);
-    this->supportedKeys.emplace("W", sf::Keyboard::Key::W);
-    this->supportedKeys.emplace("S", sf::Keyboard::Key::S);
+    //read keybinds from file
+    std::ifstream ifs;
+    ifs.open("config/supported_keys.ini");
+    if (!ifs.fail())
+    {
+        std::string key;
+        int key_int_value;
+        while (ifs >> key >> key_int_value)
+        {
+            this->supportedKeys.emplace(key, sf::Keyboard::Key(key_int_value));
+        }
+
+
+    }
+    else        //defailt basic values
+    {
+        this->supportedKeys.emplace("Escape", sf::Keyboard::Key::Escape);
+        this->supportedKeys.emplace("A", sf::Keyboard::Key::A);
+        this->supportedKeys.emplace("D", sf::Keyboard::Key::D);
+        this->supportedKeys["W"] = sf::Keyboard::Key::W;
+        this->supportedKeys["S"] = sf::Keyboard::Key::S;
+    }
+    ifs.close();
+
+    
+
+    //DEBUG
     //std::cout << this->supportedKeys.at("A") << std::endl;
+    for (auto it : this->supportedKeys)     //std::map<const char*, sf::Keyboard::Key>::iterator it
+        std::cout << it.first << " " << it.second << std::endl;
 }
 
 void Game::initStates()
 {
-    this->states.push(new GameState(this->window, &(this->supportedKeys)));
+    this->states.push(new MainMenuState(this->window, &(this->supportedKeys)));
+    //this->states.push(new GameState(this->window, &(this->supportedKeys)));
+
 }
 
 //Comstructor
@@ -78,8 +104,8 @@ void Game::updateDt()
 {
     //render and update 1 frame time
     this->dt = this->dtClock.restart().asSeconds();
-    system("cls");
-    std::cout << dt << "\n";
+   // system("cls");
+    //std::cout << dt << "\n";
 }
 
 void Game::updateSFMLEvents()

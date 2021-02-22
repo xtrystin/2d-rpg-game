@@ -2,13 +2,32 @@
 
 void GameState::initKeybinds()
 {
-	this->keybinds.emplace("MOVE_LEFT", this->supportedKeys->at("A"));
-	this->keybinds.emplace("MOVE_RIGHT", this->supportedKeys->at("D"));
-	this->keybinds.emplace("MOVE_UP", this->supportedKeys->at("W"));
-	this->keybinds.emplace("MOVE_DOWN", this->supportedKeys->at("S"));
+	std::ifstream ifs;
+	ifs.open("config/gamestate_keybinds.ini");
+	if (!ifs.fail())
+	{
+		std::string key;
+		std::string supportedkey;
+		while (ifs >> key >> supportedkey)
+		{
+			this->keybinds[key] = this->supportedKeys->at(supportedkey);
+		}
+
+
+	}
+	else        //defailt basic values
+	{
+		this->keybinds["CLOSE"] = this->supportedKeys->at("Escape");
+		this->keybinds["MOVE_LEFT"] = this->supportedKeys->at("A");
+		this->keybinds["MOVE_RIGHT"] = this->supportedKeys->at("D");
+		this->keybinds["MOVE_UP"] = this->supportedKeys->at("W");
+		this->keybinds["MOVE_DOWN"] = this->supportedKeys->at("S");
+	}
+	ifs.close();
+
 }
 
-GameState::GameState(sf::RenderWindow* window, std::map<const char*, sf::Keyboard::Key>* supportedKeys) : State(window, supportedKeys)
+GameState::GameState(sf::RenderWindow* window, std::map<std::string, sf::Keyboard::Key>* supportedKeys) : State(window, supportedKeys)
 {
 	this->initKeybinds();
 }
@@ -40,9 +59,10 @@ void GameState::updateInput(const float& dt)
 
 void GameState::update(const float& dt)
 {
+	this->updateMousePositions();
 	this->updateInput(dt);
-	std::cout << "GameState \n";
-
+	
+	//std::cout << "GameState \n";
 	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	//	std::cout << "A\n";
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameState.h"
+#include "MainMenuState.h"
 
 
 class Game
@@ -17,7 +17,7 @@ private:
 
 	std::stack<State*> states;	//state is a abstract class
 
-	std::map<const char*, sf::Keyboard::Key> supportedKeys;	//std::string - const char* ; sf::Keyboard::Key is int 
+	std::map<std::string, sf::Keyboard::Key> supportedKeys;	//std::string - const char* ; sf::Keyboard::Key is int 
 
 	// initialization
 	void initWindow();

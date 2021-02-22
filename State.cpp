@@ -1,6 +1,6 @@
 #include "State.h"
 
-State::State(sf::RenderWindow* window, std::map<const char*, sf::Keyboard::Key>* supportedKeys)
+State::State(sf::RenderWindow* window, std::map<std::string, sf::Keyboard::Key>* supportedKeys)
 {
 	this->window = window;
 	this->supportedKeys = supportedKeys;
@@ -20,13 +20,16 @@ const bool& State::getQuit() const
 
 void State::checkForQuit()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	if (sf::Keyboard::isKeyPressed(this->keybinds["CLOSE"]))	//each concrete state has to have own CLOSE bind
 	{
 		this->quit = true;
 	}
 }
 
-void State::endState()
+void State::updateMousePositions()
 {
+	this->mousePosScreen = sf::Mouse::getPosition();
+	this->mousePosWindow = sf::Mouse::getPosition(*this->window);
+	this->mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
 
 }
