@@ -1,9 +1,10 @@
 #include "State.h"
 
-State::State(sf::RenderWindow* window, std::map<std::string, sf::Keyboard::Key>* supportedKeys)
+State::State(sf::RenderWindow* window, std::map<std::string, sf::Keyboard::Key>* supportedKeys, std::stack<State*>* states)
 {
 	this->window = window;
 	this->supportedKeys = supportedKeys;
+	this->states = states;
 	this->quit = false;
 
 }
@@ -20,6 +21,7 @@ const bool& State::getQuit() const
 
 void State::checkForQuit()
 {
+	//universal quit
 	if (sf::Keyboard::isKeyPressed(this->keybinds["CLOSE"]))	//each concrete state has to have own CLOSE bind
 	{
 		this->quit = true;
