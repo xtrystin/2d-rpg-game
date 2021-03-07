@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entity.h"
+#include "Player.h"
 
 //abstract class
 class State
@@ -19,7 +19,7 @@ protected:
 	sf::Vector2f mousePosView;
 
 	//resources
-	std::vector<sf::Texture> textures;
+	std::map<std::string, sf::Texture> textures;
 
 	//func
 	virtual void initKeybinds() =0;
@@ -31,9 +31,9 @@ public:
 
 	const bool& getQuit() const;
 	
-	virtual void checkForQuit();	//same for all States -> if escape is cklicked then quit that state
+	//virtual void checkForQuit();	//same for all States -> if escape is cklicked then quit that state
 
-	virtual void endState() = 0;	//save some items/ do the quitting animation before quitting
+	void endState();	//outdated[save some items/ do the quitting animation before quitting]
 
 	virtual void updateMousePositions();
 	virtual void updateInput(const float& dt) =0;

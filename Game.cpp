@@ -2,14 +2,27 @@
 
 // static func
 
+
 // initialize func
+void Game::initVariables()
+{
+    this->window = nullptr;
+    this->fullscreen = false;
+    this->dt = 0.f;
+}
+
 void Game::initWindow()
 {
     //default window values
     std::string title = "none";
-    sf::VideoMode window_bounds(800, 600);
+    sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
+    bool fullscreen = false;
     unsigned int framerate_limit = 120;
     bool vertical_sync_enabled = false;
+    unsigned antialiasing_level = 0;
+
+    this->videoModes = sf::VideoMode::getFullscreenModes();
+
 
     //read from config file
     std::ifstream ifs;
@@ -18,13 +31,22 @@ void Game::initWindow()
     {
         std::getline(ifs, title);
         ifs >> window_bounds.width >> window_bounds.height;
+        ifs >> fullscreen;
         ifs >> framerate_limit;
         ifs >> vertical_sync_enabled;
+        ifs >> antialiasing_level;
     }
     ifs.close();
 
+    this->fullscreen = fullscreen;
+    //contex config
+    this->windowSettings.antialiasingLevel = antialiasing_level;
     //sfml window initialize
-    this->window = new sf::RenderWindow(window_bounds, title);
+    if(this->fullscreen)
+        this->window = new sf::RenderWindow(window_bounds, title, sf::Style::Fullscreen, this->windowSettings);
+    else
+        this->window = new sf::RenderWindow(window_bounds, title, sf::Style::Titlebar | sf::Style::Close, this->windowSettings);
+
     //window config
     this->window->setFramerateLimit(framerate_limit);
     this->window->setVerticalSyncEnabled(vertical_sync_enabled);
@@ -75,6 +97,7 @@ void Game::initStates()
 //Comstructor
 Game::Game()
 {
+    this->initVariables();
     this->initWindow();
     this->initKeys();
     this->initStates();

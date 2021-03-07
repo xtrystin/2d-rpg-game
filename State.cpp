@@ -19,7 +19,13 @@ const bool& State::getQuit() const
 	return this->quit;
 }
 
-void State::checkForQuit()
+void State::endState()
+{
+	this->quit = true;
+	std::cout << "Quitting state \n";
+}
+
+/*void State::checkForQuit()
 {
 	//universal quit
 	if (sf::Keyboard::isKeyPressed(this->keybinds["CLOSE"]))	//each concrete state has to have own CLOSE bind
@@ -27,7 +33,7 @@ void State::checkForQuit()
 		this->quit = true;
 	}
 }
-
+*/
 void State::updateMousePositions()
 {
 	this->mousePosScreen = sf::Mouse::getPosition();

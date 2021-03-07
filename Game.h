@@ -9,6 +9,9 @@ private:
 	//variables
 	sf::RenderWindow * window;	
 	sf::Event sfEvent;
+	std::vector<sf::VideoMode> videoModes;
+	sf::ContextSettings windowSettings;
+	bool fullscreen;
 
 	//game clock
 	sf::Clock dtClock;
@@ -20,6 +23,7 @@ private:
 	std::map<std::string, sf::Keyboard::Key> supportedKeys;	//std::string - const char* ; sf::Keyboard::Key is int 
 
 	// initialization
+	void initVariables();
 	void initWindow();
 	void initKeys();
 	void initStates();
